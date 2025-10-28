@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EditorWidget Demo</title>
+  <!-- CodeMirror 5.51.0 CDN references -->
+  <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/codemirror.min.css" integrity="sha512-NiCbDi+p5VjnmWF8MVCXPKfQ2lbQnQ46x26TZR4eEbsJQToAZ6B9L4uGlEkM0OOSws0vanfSN6uOTxvfGy1rvA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/theme/monokai.min.css" integrity="sha512-AFnefmepiD08LRzsO9/BDvHo6eFPAoHtuDbEpiTZhFHyLMwS8fwlBldZH1vsMPksPboUB14EzrbM83VUlTrt1A==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/lint/lint.css" integrity="sha512-z7aE7XmtPYClDx4hXdOWbhX8TDgnaras0MY7lFsqJjOCrau7mEU2hG4wOFNqrqjMld3bFpxcSV9V06E33T2M0Q==" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/codemirror.min.js" integrity="sha512-SB4aoSBL6e1R9NqHzF8Bzo0fqxio/cQbVhPFiZljR8PjeO84WrpVysob7UjjeNpQgGX2rihxKO9TJQwWus4oXg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/javascript/javascript.min.js" integrity="sha512-E5zs5xsoqtm9PAtYORep6kTllcKITSiX9RtBukFXtYUbVlVaacNCNd4doe8XuqYl3mGunztorlRp0PMDAv1t4A==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/htmlmixed/htmlmixed.min.js" integrity="sha512-LLYwDMFsIUifa0Z6zG6jVP6aqYmJSLn3xXIJz/0j9cbh5+i1vbPhzbh7Wrwd0fJkWIcV5Cj5nEQFS4TNSbVa0g==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/css/css.min.js" integrity="sha512-M4tXmXAqsooswTXv2CIFSztpB9NYs9IZQo272S6xW6Cth0LuleBaSZqAtmiW/XsY0xj1ABL9RvXBn1MsRuoyKQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/xml/xml.min.js" integrity="sha512-Ypx4OyiAbaOP4rbLoNPIy8/u83SH1t2kX7CdVwjBS5skSk5qxtIZF3u6iUcikX4SKvXdNL6so7Up9Qtx23pUxQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/edit/matchbrackets.min.js" integrity="sha512-Ps2+I2hn5XzAIa3UEavPN6Tx01kmN8i0RtzKE1rFprTu87eNfd2bVloSEI6bo246wHS+2U+JxC9NDEkGoVzJew==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/edit/closebrackets.min.js" integrity="sha512-DAIJy4jG4mmAg8yxjTDS/PilB7xOnDEolPBpY/m+bw8VFLjkGnYW03zha6t2aUPl+rh9VhZ3iEsM6v+hM5uPzg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/selection/active-line.min.js" integrity="sha512-PqKfkOO1MJCkdBSIUWjSXz7KDT8NrWud5SJxNMRCGNpWaVpCXSIZORwxp2toYILw7TrQLCGNqPhMjKHxWdWbhA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/fold/foldcode.min.js" integrity="sha512-TSbc/6Xtpk2HyBuJ2kxtXfW06yA6ph//h6kOC1/LltwWg1QaHBlGhkBZ6wCx703NPasb/On9Dy3npG3iNCg5qQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/fold/foldgutter.min.js" integrity="sha512-e/FJ6ztrIGyYip79ZoKJPabvIDYhkkutjuXTqZKfP+lUXLkRQ6YwjBO7NVYj14Et0+5q1nMwAns11vtAFaF2rQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/fold/brace-fold.min.js" integrity="sha512-mOPldogQkV/OI/Qcey+GPSQKTxgxyGQg26CWaNhmZ+uVIxxUxr6Bqf/8vmdj2gK6niCx3gae3BLGVM7OIvr0tA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/search/searchcursor.min.js" integrity="sha512-Lj6yo60QpV8ZmndNkP83O9vCBe0WX4tiwCRFhpChYArFvaeqO5YnGAI6hiJOdfpbceGppQPreB3HtcSraYxbNg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/search/search.min.js" integrity="sha512-I6dSpp39TYNMS3G/bt6EAPZbL6wibtRdk2yddcns3P2jXCf+F2hCqUcH6OZNHeIE2OkdajJcDjuiFqEJcvGrIA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/comment/comment.min.js" integrity="sha512-S3PmHGN9bNtzgjJuQWAuaK4dQ/cKzbz0L4GjHeOP3SgAHxODPGNM/hfskpAGGe/ZcmxczEyA+DvIEgzqb++b4Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js" integrity="sha512-MCUpdWtSMK1rm+4sWFpfFuz4UTpXEud5p236Otyw1Ea4kdVyNxy+eMHR76u7xfY5DlpDmOzgEhgDq1ZGLHqkCA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/lint/lint.js" integrity="sha512-IfloIhlBiwZLt94/SKa/kWZM7SsJE8itmvL1Z2zBOXLgqi9SJUf2N/xnkmi7qrt6ilmvW4vQSLu8EbH/lwYseQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/lint/javascript-lint.js" integrity="sha512-PYRRP6WtVY3B9bwaM1529Ftv83hS0PvWBjUt3Ppnd21yw9RzeMxGvdBbLfBNZOWibG7J5dtPKpQARR7badqA5Q==" crossorigin="anonymous"></script>
+  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/codemirror.min.css" integrity="sha512-NiCbDi+p5VjnmWF8MVCXPKfQ2lbQnQ46x26TZR4eEbsJQToAZ6B9L4uGlEkM0OOSws0vanfSN6uOTxvfGy1rvA==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/theme/monokai.min.css" integrity="sha512-AFnefmepiD08LRzsO9/BDvHo6eFPAoHtuDbEpiTZhFHyLMwS8fwlBldZH1vsMPksPboUB14EzrbM83VUlTrt1A==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/lint/lint.css" integrity="sha512-z7aE7XmtPYClDx4hXdOWbhX8TDgnaras0MY7lFsqJjOCrau7mEU2hG4wOFNqrqjMld3bFpxcSV9V06E33T2M0Q==" crossorigin="anonymous">
+  <link rel="stylesheet" href="editor-widget.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+    header {
+      padding: 24px 32px 12px;
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    header p {
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+    main {
+      padding: 0 32px 48px;
+    }
+    .demo-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      margin-bottom: 32px;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+      padding: 20px;
+    }
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+    .panel label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #475569;
+    }
+    .panel select,
+    .panel input[type="checkbox"] {
+      margin-bottom: 12px;
+    }
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .controls-row button {
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: 1px solid #cbd5f5;
+      background: #e2e8f0;
+      cursor: pointer;
+    }
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 8px;
+      overflow: auto;
+      font-size: 13px;
+    }
+    footer {
+      padding: 24px 32px 48px;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    footer a {
+      color: #38bdf8;
+    }
+    .widget-shell {
+      height: 480px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EditorWidget – CodeMirror 5.51.0 Playground</h1>
+    <p>
+      Drop <code>editor-widget.css</code> and <code>editor-widget.js</code> into any legacy Marionette or Backbone application,
+      load CodeMirror 5.51.0 from CDN, and mount the widget with a single call. The right-side resource rail mirrors the branded
+      Expression Builder palette, so your teams can drag in constants and server helpers without leaving the editor. The toolbar lint toggle lights up when
+      the optional CodeMirror lint addons and JSHINT are present so authors catch syntax issues instantly.
+      Try the live controls below to see console capture, debug utilities, theming, and sandbox execution in action. Keyboard shortcuts: <kbd>Ctrl/Cmd + /</kbd> comment, <kbd>Ctrl/Cmd + F</kbd> search,
+      <kbd>Ctrl/Cmd + B</kbd> toggle console, <kbd>Ctrl/Cmd + Enter</kbd> run code, <kbd>Ctrl/Cmd + Shift + G</kbd> open the AI prompt panel.
+    </p>
+  </header>
+  <main>
+    <section class="panel">
+      <h2>Interactive Demo</h2>
+      <p>
+        Use the toolbar&rsquo;s <strong>AI Prompt</strong> button to wire OpenAI, Anthropic Claude, or Grok. Credentials stay in this browser session and only persist if you opt in within the panel.
+      </p>
+      <div class="controls-row">
+        <label>
+          Theme
+          <select id="theme-select">
+            <option value="default">Default</option>
+            <option value="monokai">Monokai</option>
+          </select>
+        </label>
+        <label>
+          Mode
+          <select id="mode-select">
+            <option value="javascript">JavaScript</option>
+            <option value="htmlmixed">HTML (mixed)</option>
+            <option value="css">CSS</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" id="toggle-console" checked>
+          Show console
+        </label>
+        <label>
+          <input type="checkbox" id="toggle-capture" checked>
+          Capture global console
+        </label>
+        <label>
+          <input type="checkbox" id="toggle-debug" checked>
+          Debug overlay & counters
+        </label>
+      </div>
+      <div class="controls-row">
+        <button type="button" data-log="log">console.log</button>
+        <button type="button" data-log="info">console.info</button>
+        <button type="button" data-log="warn">console.warn</button>
+        <button type="button" data-log="error">console.error</button>
+        <button type="button" id="btn-dump">Dump object</button>
+        <button type="button" id="btn-throw">Throw error</button>
+        <button type="button" id="btn-mark">Debug mark</button>
+        <button type="button" id="btn-measure">Debug measure</button>
+      </div>
+      <div class="widget-shell" id="demo-widget"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Integration snippets</h2>
+      <p>Use inside Marionette and Backbone views without build tooling:</p>
+      <pre><code>// Marionette integration
+var EditorView = Marionette.ItemView.extend({
+  template: _.template('<div class="editor-region" style="height:500px;"></div>'),
+  onShow: function() {
+    this._editor = window.EditorWidget.mount(this.$('.editor-region')[0], {
+      value: '// Hello from Marionette',
+      mode: 'javascript',
+      showConsole: true,
+      captureGlobalConsole: true
+    });
+  },
+  onBeforeDestroy: function() {
+    if (this._editor) {
+      this._editor.dispose();
+    }
+  }
+});
+
+// Backbone.View
+var BackboneEditorView = Backbone.View.extend({
+  className: 'editor-region',
+  initialize: function() {
+    this.$el.css('height', '500px');
+  },
+  render: function() {
+    this._editor = window.EditorWidget.mount(this.el, {
+      value: '<!-- Hello from Backbone -->',
+      mode: 'htmlmixed',
+      showConsole: true
+    });
+    return this;
+  },
+  remove: function() {
+    if (this._editor) {
+      this._editor.dispose();
+    }
+    Backbone.View.prototype.remove.call(this);
+  }
+});</code></pre>
+    </section>
+
+    <section class="panel">
+      <h2>Quick Embed</h2>
+      <pre><code>&lt;!-- CodeMirror 5.51.0 --&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/codemirror.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/theme/monokai.min.css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/codemirror.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/javascript/javascript.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Widget --&gt;
+&lt;link rel="stylesheet" href="./dist/editor-widget.css"&gt;
+&lt;script src="./dist/editor-widget.js"&gt;&lt;/script&gt;
+
+&lt;div id="my-editor" style="height:500px;"></div&gt;
+&lt;script&gt;
+  var inst = window.EditorWidget.mount(document.getElementById('my-editor'), {
+    value: 'console.log("Hello, world!")',
+    mode: 'javascript',
+    showConsole: true,
+    captureGlobalConsole: true,
+    persist: true,
+    persistKey: 'demo',
+    enableLint: true,
+    enableAI: true,
+    defaultAIProvider: 'openai',
+    aiProviders: {
+      openai: { model: 'gpt-4.1-mini' },
+      anthropic: { model: 'claude-3-5-sonnet-20241022' },
+      grok: { model: 'grok-beta' }
+    },
+    resources: [
+      { label: 'Constants', items: [{ label: 'true', snippet: 'true' }] },
+      { label: 'JS Helpers', groups: [{ label: 'Server', items: [{ label: 'httpPost()', snippet: 'httpPost(url, data, headers);' }] }] }
+    ]
+  });
+&lt;/script&gt;</code></pre>
+    </section>
+
+    <section class="panel">
+      <h2>AI-assisted prompts</h2>
+      <p>
+        Toggle the prompt workspace by setting <code>enableAI: true</code>. The widget ships with templates for OpenAI, Anthropic Claude, and Grok so you can describe the script you need and drop the generated JavaScript straight into CodeMirror.
+      </p>
+      <ul>
+        <li><kbd>Ctrl/Cmd + Shift + G</kbd> opens the panel without touching the mouse.</li>
+        <li>API keys are kept in memory and only saved to <code>localStorage</code> when you check “Remember API key”.</li>
+        <li>Select between replacing the editor contents or inserting at the current cursor position.</li>
+      </ul>
+      <p>
+        Requests are sent directly from the browser, so ensure the selected endpoint permits CORS or proxy through your backend if required.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Notes:</p>
+    <ul>
+      <li>Sandbox execution uses <code>new Function</code>; keep it to trusted code paths.</li>
+      <li>Console capture respects filters, pause/resume, copy, download, and wrapping controls.</li>
+      <li>The resource panel mirrors the legacy builder layout — click any snippet to insert directly at the cursor.</li>
+      <li>Splitter position, theme, visibility, and editor content persist when <code>persist</code> is enabled.</li>
+      <li>Linting toggles require CodeMirror lint addons plus <code>JSHINT</code> (see CDN list above).</li>
+      <li>The AI prompt panel (<kbd>Ctrl/Cmd + Shift + G</kbd>) supports OpenAI, Anthropic Claude, and Grok; keys stay client-side unless you opt to persist them.</li>
+    </ul>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/codemirror.min.js" integrity="sha512-SB4aoSBL6e1R9NqHzF8Bzo0fqxio/cQbVhPFiZljR8PjeO84WrpVysob7UjjeNpQgGX2rihxKO9TJQwWus4oXg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/javascript/javascript.min.js" integrity="sha512-E5zs5xsoqtm9PAtYORep6kTllcKITSiX9RtBukFXtYUbVlVaacNCNd4doe8XuqYl3mGunztorlRp0PMDAv1t4A==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/htmlmixed/htmlmixed.min.js" integrity="sha512-LLYwDMFsIUifa0Z6zG6jVP6aqYmJSLn3xXIJz/0j9cbh5+i1vbPhzbh7Wrwd0fJkWIcV5Cj5nEQFS4TNSbVa0g==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/css/css.min.js" integrity="sha512-M4tXmXAqsooswTXv2CIFSztpB9NYs9IZQo272S6xW6Cth0LuleBaSZqAtmiW/XsY0xj1ABL9RvXBn1MsRuoyKQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/mode/xml/xml.min.js" integrity="sha512-Ypx4OyiAbaOP4rbLoNPIy8/u83SH1t2kX7CdVwjBS5skSk5qxtIZF3u6iUcikX4SKvXdNL6so7Up9Qtx23pUxQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/edit/matchbrackets.min.js" integrity="sha512-Ps2+I2hn5XzAIa3UEavPN6Tx01kmN8i0RtzKE1rFprTu87eNfd2bVloSEI6bo246wHS+2U+JxC9NDEkGoVzJew==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/edit/closebrackets.min.js" integrity="sha512-DAIJy4jG4mmAg8yxjTDS/PilB7xOnDEolPBpY/m+bw8VFLjkGnYW03zha6t2aUPl+rh9VhZ3iEsM6v+hM5uPzg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/selection/active-line.min.js" integrity="sha512-PqKfkOO1MJCkdBSIUWjSXz7KDT8NrWud5SJxNMRCGNpWaVpCXSIZORwxp2toYILw7TrQLCGNqPhMjKHxWdWbhA==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/fold/foldcode.min.js" integrity="sha512-TSbc/6Xtpk2HyBuJ2kxtXfW06yA6ph//h6kOC1/LltwWg1QaHBlGhkBZ6wCx703NPasb/On9Dy3npG3iNCg5qQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/fold/foldgutter.min.js" integrity="sha512-e/FJ6ztrIGyYip79ZoKJPabvIDYhkkutjuXTqZKfP+lUXLkRQ6YwjBO7NVYj14Et0+5q1nMwAns11vtAFaF2rQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/fold/brace-fold.min.js" integrity="sha512-mOPldogQkV/OI/Qcey+GPSQKTxgxyGQg26CWaNhmZ+uVIxxUxr6Bqf/8vmdj2gK6niCx3gae3BLGVM7OIvr0tA==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/search/searchcursor.min.js" integrity="sha512-Lj6yo60QpV8ZmndNkP83O9vCBe0WX4tiwCRFhpChYArFvaeqO5YnGAI6hiJOdfpbceGppQPreB3HtcSraYxbNg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/search/search.min.js" integrity="sha512-I6dSpp39TYNMS3G/bt6EAPZbL6wibtRdk2yddcns3P2jXCf+F2hCqUcH6OZNHeIE2OkdajJcDjuiFqEJcvGrIA==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/comment/comment.min.js" integrity="sha512-S3PmHGN9bNtzgjJuQWAuaK4dQ/cKzbz0L4GjHeOP3SgAHxODPGNM/hfskpAGGe/ZcmxczEyA+DvIEgzqb++b4Q==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js" integrity="sha512-MCUpdWtSMK1rm+4sWFpfFuz4UTpXEud5p236Otyw1Ea4kdVyNxy+eMHR76u7xfY5DlpDmOzgEhgDq1ZGLHqkCA==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/lint/lint.js" integrity="sha512-IfloIhlBiwZLt94/SKa/kWZM7SsJE8itmvL1Z2zBOXLgqi9SJUf2N/xnkmi7qrt6ilmvW4vQSLu8EbH/lwYseQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.51.0/addon/lint/javascript-lint.js" integrity="sha512-PYRRP6WtVY3B9bwaM1529Ftv83hS0PvWBjUt3Ppnd21yw9RzeMxGvdBbLfBNZOWibG7J5dtPKpQARR7badqA5Q==" crossorigin="anonymous"></script>
+  <script src="editor-widget.js"></script>
+  <script>
+    (function () {
+      var container = document.getElementById('demo-widget');
+      var instance = window.EditorWidget.mount(container, {
+        value: "function greet(name) {\n  console.log('Hello', name);\n}\n\nconsole.log('Widget booted');",
+        mode: 'javascript',
+        theme: 'default',
+        showConsole: true,
+        captureGlobalConsole: true,
+        enableFolding: true,
+        enableBasicAddons: true,
+        resizable: true,
+        wrapConsole: true,
+        persist: true,
+        persistKey: 'demo-primary',
+        enableLint: true,
+        enableAI: true,
+        defaultAIProvider: 'openai',
+        aiRememberCredentials: false,
+        aiProviders: {
+          openai: { model: 'gpt-4.1-mini' },
+          anthropic: { model: 'claude-3-5-sonnet-20241022' },
+          grok: { model: 'grok-beta' }
+        }
+      });
+      window.demoEditor = instance;
+
+      var themeSelect = document.getElementById('theme-select');
+      themeSelect.value = instance.getOption('theme') || 'default';
+      themeSelect.addEventListener('change', function () {
+        instance.setTheme(themeSelect.value);
+      });
+
+      var modeSelect = document.getElementById('mode-select');
+      modeSelect.value = instance.getOption('mode') || 'javascript';
+      modeSelect.addEventListener('change', function () {
+        instance.setMode(modeSelect.value);
+      });
+
+      var consoleToggle = document.getElementById('toggle-console');
+      var consolePane = container.querySelector('.ew-console-pane');
+      consoleToggle.checked = !consolePane || !consolePane.classList.contains('ew-hidden');
+      consoleToggle.addEventListener('change', function () {
+        instance.console.setVisible(consoleToggle.checked);
+      });
+
+      var captureToggle = document.getElementById('toggle-capture');
+      captureToggle.checked = !!instance.getOption('captureGlobalConsole');
+      captureToggle.addEventListener('change', function () {
+        instance.console.setCapture(captureToggle.checked);
+      });
+
+      var debugToggle = document.getElementById('toggle-debug');
+      debugToggle.checked = instance.debug.isEnabled();
+      debugToggle.addEventListener('change', function () {
+        if (debugToggle.checked) {
+          instance.debug.enable();
+        } else {
+          instance.debug.disable();
+        }
+      });
+
+      document.querySelectorAll('[data-log]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var level = button.getAttribute('data-log');
+          var fn = console[level] || console.log;
+          fn.call(console, 'Demo ' + level + ' @', new Date().toLocaleTimeString());
+        });
+      });
+
+      document.getElementById('btn-dump').addEventListener('click', function () {
+        console.log('Sample payload', { id: 42, nested: { ts: Date.now(), items: [1, 2, 3] } });
+      });
+
+      document.getElementById('btn-throw').addEventListener('click', function () {
+        throw new Error('Demo error to showcase overlay');
+      });
+
+      document.getElementById('btn-mark').addEventListener('click', function () {
+        instance.debug.mark('demo-mark');
+        console.info('Marked demo-mark');
+      });
+
+      document.getElementById('btn-measure').addEventListener('click', function () {
+        instance.debug.mark('demo-start');
+        setTimeout(function () {
+          instance.debug.mark('demo-end');
+          instance.debug.measure('demo-start', 'demo-end');
+        }, 120);
+      });
+    }());
+  </script>
+</body>
+</html>
